@@ -3,7 +3,7 @@
     uri: https://github.com/catkin/catkin_simple.git
 - git:
     local-name: orb_slam_2_catkin
-    uri: https://github.com/ethz-asl/orb_slam_2_catkin.git
+    uri: https://github.com/phatli/orb_slam_2_catkin.git
 - git:
     local-name: image_undistort
     uri: https://github.com/ethz-asl/image_undistort.git
