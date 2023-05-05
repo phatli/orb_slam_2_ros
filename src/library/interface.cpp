@@ -24,6 +24,9 @@ void OrbSlam2Interface::advertiseTopics() {
   // Advertising topics
   T_pub_ = nh_private_.advertise<geometry_msgs::TransformStamped>(
       "transform_cam", 1);
+
+  pose_pub_ = nh_private_.advertise<geometry_msgs::PoseStamped>(
+      "pose_cam", 1);
   // Creating a callback timer for TF publisher
   tf_timer_ = nh_.createTimer(ros::Duration(0.01),
                               &OrbSlam2Interface::publishCurrentPoseAsTF, this);
@@ -53,6 +56,18 @@ void OrbSlam2Interface::publishCurrentPose(const Transformation& T,
   tf::transformKindrToMsg(T, &msg.transform);
   // Publishing the current transformation.
   T_pub_.publish(msg);
+}
+
+void OrbSlam2Interface::publishCurrentPoseAsPose(const Transformation& T,
+                                           const std_msgs::Header& header) {
+  // Creating the message
+  geometry_msgs::PoseStamped msg;
+  // Filling out the header
+  msg.header = header;
+  // Converting from a minkindr transform to a pose message
+  tf::poseKindrToMsg(T, &msg.pose);
+  // Publishing the current pose.
+  pose_pub_.publish(msg);
 }
 
 void OrbSlam2Interface::publishCurrentPoseAsTF(const ros::TimerEvent& event) {

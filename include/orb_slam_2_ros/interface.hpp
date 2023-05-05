@@ -38,6 +38,9 @@ class OrbSlam2Interface {
   // Publishing functions
   void publishCurrentPose(const Transformation& T,
                           const std_msgs::Header& header);
+
+  void publishCurrentPoseAsPose(const Transformation& T,
+                          const std_msgs::Header& header);
   void publishCurrentPoseAsTF(const ros::TimerEvent& event);
 
   // Helper functions
@@ -49,6 +52,7 @@ class OrbSlam2Interface {
 
   // Publishers
   ros::Publisher T_pub_;
+  ros::Publisher pose_pub_;
   tf::TransformBroadcaster tf_broadcaster_;
   ros::Timer tf_timer_;
 
