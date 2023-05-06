@@ -7,7 +7,10 @@ find_package(catkin_simple REQUIRED)
 catkin_simple(ALL_DEPS_REQUIRED)
 
 find_package(Eigen REQUIRED)
-include_directories(${Eigen_INCLUDE_DIRS})
+include_directories(
+  ${Eigen_INCLUDE_DIRS}
+  /usr/include/pcl-1.7
+  )
 
 cs_add_library(orb_slam_2_interface
   src/library/interface.cpp

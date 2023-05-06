@@ -43,15 +43,21 @@ namespace orb_slam_2_interface
     // Handing the image to ORB slam for tracking
     cv::Mat T_C_W_opencv =
         slam_system_->TrackMonocular(cv_ptr->image, cv_ptr->header.stamp.toSec());
+
+    std::vector<cv::KeyPoint> pts_map =
+        slam_system_->GetTrackedKeyPointsUn();
+
     // If tracking successfull
     if (!T_C_W_opencv.empty())
     {
+
       // Converting to kindr transform and publishing
       Transformation T_C_W, T_W_C;
       convertOrbSlamPoseToKindr(T_C_W_opencv, &T_C_W);
       T_W_C = T_C_W.inverse();
       publishCurrentPose(T_W_C, msg->header);
       publishCurrentPoseAsPose(T_W_C, msg->header);
+      publishPointCloud(pts_map);
       // Saving the transform to the member for publishing as a TF
       T_W_C_ = T_W_C;
     }
