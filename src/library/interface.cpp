@@ -92,17 +92,25 @@ namespace orb_slam_2_interface
         tf_transform, ros::Time::now(), frame_id_, child_frame_id_));
   }
 
-  void OrbSlam2Interface::publishPointCloud(const std::vector<cv::KeyPoint> &keyPoints, const std_msgs::Header &header)
+  void OrbSlam2Interface::publishPointCloud(const std::vector<ORB_SLAM2::MapPoint *> &mapPoints, const std_msgs::Header &header)
   {
-    // Create PCL point cloud
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZRGB>);
     pcl::PointXYZRGB point;
 
-    for (const auto &kp : keyPoints)
+    for (const auto &mp : mapPoints)
     {
-      point.x = kp.pt.x;
-      point.y = kp.pt.y;
-      point.z = 0.0;
+      if (mp == nullptr)
+      {
+        continue;
+      }
+      cv::Mat worldPos = mp->GetWorldPos();
+      if (worldPos.empty())
+      {
+        continue;
+      }
+      point.x = worldPos.at<float>(0);
+      point.y = worldPos.at<float>(1);
+      point.z = worldPos.at<float>(2);
       point.r = 255;
       point.g = 255;
       point.b = 255;

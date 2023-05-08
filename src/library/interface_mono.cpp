@@ -44,8 +44,10 @@ namespace orb_slam_2_interface
     cv::Mat T_C_W_opencv =
         slam_system_->TrackMonocular(cv_ptr->image, cv_ptr->header.stamp.toSec());
 
-    std::vector<cv::KeyPoint> pts_map =
-        slam_system_->GetTrackedKeyPointsUn();
+    // std::vector<cv::KeyPoint> pts_map =
+    //     slam_system_->GetTrackedKeyPointsUn();
+    std::vector<ORB_SLAM2::MapPoint*> pts_map = 
+        slam_system_->GetTrackedMapPoints();
 
     // If tracking successfull
     if (!T_C_W_opencv.empty())
