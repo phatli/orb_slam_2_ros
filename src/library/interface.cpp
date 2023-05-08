@@ -77,6 +77,7 @@ namespace orb_slam_2_interface
     geometry_msgs::PoseStamped msg;
     // Filling out the header
     msg.header = header;
+    msg.header.frame_id = "world";
     // Converting from a minkindr transform to a pose message
     tf::poseKindrToMsg(T, &msg.pose);
     // Publishing the current pose.
@@ -91,7 +92,7 @@ namespace orb_slam_2_interface
         tf_transform, ros::Time::now(), frame_id_, child_frame_id_));
   }
 
-  void OrbSlam2Interface::publishPointCloud(const std::vector<cv::KeyPoint> &keyPoints)
+  void OrbSlam2Interface::publishPointCloud(const std::vector<cv::KeyPoint> &keyPoints, const std_msgs::Header &header)
   {
     // Create PCL point cloud
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZRGB>);
@@ -109,6 +110,7 @@ namespace orb_slam_2_interface
     }
 
     sensor_msgs::PointCloud2 cloudMsg;
+    cloudMsg.header = header;
     pcl::toROSMsg(*cloud, cloudMsg);
     cloudMsg.header.frame_id = "world";
 

@@ -57,7 +57,7 @@ namespace orb_slam_2_interface
       T_W_C = T_C_W.inverse();
       publishCurrentPose(T_W_C, msg->header);
       publishCurrentPoseAsPose(T_W_C, msg->header);
-      publishPointCloud(pts_map);
+      publishPointCloud(pts_map, msg->header);
       // Saving the transform to the member for publishing as a TF
       T_W_C_ = T_W_C;
     }

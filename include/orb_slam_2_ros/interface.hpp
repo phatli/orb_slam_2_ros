@@ -45,7 +45,7 @@ namespace orb_slam_2_interface
                                   const std_msgs::Header &header);
     void publishCurrentPoseAsTF(const ros::TimerEvent &event);
 
-    void publishPointCloud(const std::vector<cv::KeyPoint> &keyPoints);
+    void publishPointCloud(const std::vector<cv::KeyPoint> &keyPoints, const std_msgs::Header &header);
 
     // Helper functions
     void convertOrbSlamPoseToKindr(const cv::Mat &T_cv, Transformation *T_kindr);
