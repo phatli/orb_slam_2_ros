@@ -56,6 +56,9 @@ void OrbSlam2InterfaceStereo::stereoImageCallback(
   cv::Mat T_C_W_opencv =
       slam_system_->TrackStereo(cv_ptr_left->image, cv_ptr_right->image,
                                 cv_ptr_left->header.stamp.toSec());
+  std::vector<ORB_SLAM2::MapPoint*> pts_map = 
+      slam_system_->GetTrackedMapPoints();
+
   // If tracking successfull
   if (!T_C_W_opencv.empty()) {
     // Converting to kindr transform and publishing
@@ -63,6 +66,8 @@ void OrbSlam2InterfaceStereo::stereoImageCallback(
     convertOrbSlamPoseToKindr(T_C_W_opencv, &T_C_W);
     T_W_C = T_C_W.inverse();
     publishCurrentPose(T_W_C, msg_left->header);
+    publishCurrentPoseAsPose(T_W_C, msg_left->header);
+    publishPointCloud(pts_map, msg_left->header);
     // Saving the transform to the member for publishing as a TF
     T_W_C_ = T_W_C;
   }
